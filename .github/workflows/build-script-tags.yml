@@ -1,0 +1,49 @@
+name: Build script tags
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install build dependencies
+        run: |
+          npm install --global typescript
+          npm install --no-save @types/p5 p5
+
+      - name: Compile TypeScript
+        run: tsc --pretty false
+
+      - name: Generate script tags
+        run: python generate_script_tags.py > script-tags.txt
+
+      - name: Generate asset preload calls
+        run: python preload_assets.py > preload-assets.txt
+
+      - name: Upload generated files
+        uses: actions/upload-artifact@v4
+        with:
+          name: spamton-neo-build
+          path: |
+            script-tags.txt
+            preload-assets.txt
+            dist/
+          if-no-files-found: error
