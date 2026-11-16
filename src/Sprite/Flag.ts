@@ -1,13 +1,13 @@
-import { Image, prototype } from "p5";
+import * as p5 from "p5";
 import { imageScaled, WorldMousePos } from "../Framework/Extensions.js";
 import { Game } from "../Game/Game.js";
 import { StaticSprite } from "./StaticSprite.js";
 
 export class Flag extends StaticSprite
 {
-    private image: Image;
+    private image: p5.Image;
 
-    constructor(x: number, y: number, image: Image)
+    constructor(x: number, y: number, image: p5.Image)
     {
         super(x, y);
         this.image = image;
