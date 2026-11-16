@@ -27,7 +27,7 @@ jobs:
       - name: Install build dependencies
         run: |
           npm install --global typescript@5.9.3
-          npm install --no-save @types/p5 p5
+          npm install --no-save p5@1.4.0 @types/p5@1.7.7
 
       - name: Compile TypeScript
         run: tsc --pretty false
