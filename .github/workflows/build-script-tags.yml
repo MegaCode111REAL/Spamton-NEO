@@ -31,6 +31,13 @@ jobs:
           npm install --global typescript@5.9.3
           npm install --no-save p5@1.4.0 @types/p5@1.7.7
 
+      - name: Copy p5 runtime libraries
+        run: |
+          test -f node_modules/p5/lib/p5.js
+          test -f node_modules/p5/lib/addons/p5.sound.min.js
+          cp node_modules/p5/lib/p5.js ./p5.js
+          cp node_modules/p5/lib/addons/p5.sound.min.js ./p5.sound.min.js
+
       - name: Compile TypeScript
         run: tsc --pretty false
 
@@ -44,7 +51,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f -- dist/ script-tags.txt preload-assets.txt
+          git add -f -- dist/ script-tags.txt preload-assets.txt p5.js p5.sound.min.js
           if git diff --cached --quiet; then
             echo "Generated build is already up to date."
           else
@@ -60,4 +67,6 @@ jobs:
             script-tags.txt
             preload-assets.txt
             dist/
+            p5.js
+            p5.sound.min.js
           if-no-files-found: error
